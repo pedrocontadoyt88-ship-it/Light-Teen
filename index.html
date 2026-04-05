@@ -1,131 +1,186 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"> 
-<title>Light Teen</title>
+<meta charset="UTF-8">
+<title>Faeblood Family</title>
 
 <style>
 body {
+  margin:0;
   font-family: Arial;
-  background: linear-gradient(135deg,#ff4da6,#6a5cff);
-  color: white;
-  text-align: center;
+  background: linear-gradient(135deg,#000,#3b0000);
+  color:white;
 }
 
-h1 {
-  margin-top: 20px;
+header {
+  text-align:center;
+  padding:20px;
+  font-size:30px;
+  background:black;
 }
 
-.participants {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+nav {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:15px;
+}
+
+nav button {
+  padding:10px;
+  border:none;
+  background:crimson;
+  color:white;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.section {
+  display:none;
+  padding:20px;
+  text-align:center;
+}
+
+.active {
+  display:block;
+}
+
+.cards {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:15px;
 }
 
 .card {
-  background: rgba(0,0,0,0.4);
-  padding: 10px;
-  border-radius: 15px;
-  width: 160px;
-  transition: 0.3s;
+  background:rgba(255,255,255,0.1);
+  padding:10px;
+  border-radius:10px;
+  width:150px;
+  transition:0.3s;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform:scale(1.1);
 }
 
 img {
-  width: 100%;
-  border-radius: 10px;
+  width:100%;
+  border-radius:10px;
 }
 
-button {
-  margin-top: 10px;
-  padding: 8px;
-  border: none;
-  border-radius: 8px;
-  background: #fff;
-  color: black;
-  cursor: pointer;
+input, button {
+  margin:5px;
+  padding:8px;
+  border-radius:5px;
+  border:none;
 }
 
-#resultado {
-  display: none;
-  margin-top: 20px;
+#adminPanel {
+  display:none;
 }
 </style>
 
 </head>
 <body>
 
-<h1>✨ FAEBLOOD ✨</h1>
+<header>🩸 FAEBLOOD FAMILY 🩸</header>
 
-<button onclick="abrirVideo()">🎬 Ver Servidor</button>
-<div id="video"></div>
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('membros')">Membros</button>
+<button onclick="show('recrutar')">Recrutar</button>
+<button onclick="show('ranking')">Ranking</button>
+<button onclick="admin()">Admin</button>
+</nav>
 
-<h2>Participantes</h2>
+<div id="home" class="section active">
+<h2>Bem-vindo à Faeblood</h2>
+<p>A família mais temida do RP 🔥</p>
+</div>
 
-<div class="participants">
+<div id="membros" class="section">
+<h2>Membros</h2>
+<div class="cards">
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
-<p>Peu</p>
-<button onclick="votar('Peu')">Votar</button>
+<p>Peu 👑</p>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
-<p>Saulo</p>
-<button onclick="votar('Saulo')">Votar</button>
+<p>Saulo ⚔️</p>
 </div>
 
 <div class="card">
 <img src="https://via.placeholder.com/150">
-<p>Lukas</p>
-<button onclick="votar('Lukas')">Votar</button>
+<p>Lukas 🩸</p>
 </div>
 
 </div>
+</div>
 
+<div id="recrutar" class="section">
+<h2>Entrar na Faeblood</h2>
+<input id="nome" placeholder="Seu nome">
+<input id="idade" placeholder="Idade">
 <br>
+<button onclick="enviar()">Enviar</button>
+<p id="msg"></p>
+</div>
 
-<button onclick="verResultado()">🔒 Ver Resultado (Admin)</button>
+<div id="ranking" class="section">
+<h2>Ranking</h2>
+<div id="lista"></div>
+</div>
 
-<div id="resultado"></div>
+<div id="adminPanel" class="section">
+<h2>Painel Admin</h2>
+<button onclick="addPonto('Peu')">+1 Peu</button>
+<button onclick="addPonto('Saulo')">+1 Saulo</button>
+<button onclick="addPonto('Lukas')">+1 Lukas</button>
+</div>
 
 <script>
-let votos = {};
+let pontos = {
+  "Peu":0,
+  "Saulo":0,
+  "Lukas":0
+};
 
-function votar(nome){
-  if(!votos[nome]) votos[nome]=0;
-  votos[nome]++;
-  alert("Voto enviado!");
+function show(sec){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(sec).classList.add('active');
 }
 
-function verResultado(){
+function enviar(){
+  let nome = document.getElementById('nome').value;
+  document.getElementById('msg').innerText = "Pedido enviado 🔥";
+}
+
+function addPonto(nome){
+  pontos[nome]++;
+  atualizar();
+}
+
+function atualizar(){
+  let ranking = Object.entries(pontos).sort((a,b)=>b[1]-a[1]);
+  let texto="";
+  ranking.forEach((p,i)=>{
+    texto += (i+1)+"º "+p[0]+" - "+p[1]+" pts<br>";
+  });
+  document.getElementById("lista").innerHTML = texto;
+}
+
+function admin(){
   let senha = prompt("Senha:");
 
-  if(senha === "1234"){
-    let ranking = Object.entries(votos)
-      .sort((a,b)=>b[1]-a[1]);
-
-    let texto = "<h2>Ranking</h2>";
-
-    ranking.forEach((p,i)=>{
-      texto += (i+1)+"º - "+p[0]+" ("+p[1]+" votos)<br>";
-    });
-
-    document.getElementById("resultado").innerHTML = texto;
-    document.getElementById("resultado").style.display="block";
+  if(senha==="faeblood"){
+    show("adminPanel");
   } else {
-    alert("Senha errada!");
+    alert("Acesso negado");
   }
-}
-
-function abrirVideo(){
-  document.getElementById("video").innerHTML =
-  '<iframe width="300" height="200" src="https://www.youtube.com/embed/dQw4w9WgXcQ"></iframe>';
 }
 </script>
 
