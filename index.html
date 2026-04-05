@@ -1,1 +1,232 @@
-<h1>TESTE FUNCIONANDO 🔥</h1>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Faeblood</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+
+body{
+  background: linear-gradient(135deg,#000,#2b0000);
+  color:white;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  padding:30px;
+  font-size:35px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(10px);
+}
+
+/* MENU */
+nav{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:20px;
+}
+
+nav button{
+  padding:10px 15px;
+  border:none;
+  border-radius:20px;
+  background:crimson;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+nav button:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 10px crimson;
+}
+
+/* SECTIONS */
+.section{
+  display:none;
+  padding:20px;
+  text-align:center;
+}
+
+.active{
+  display:block;
+}
+
+/* CARDS */
+.cards{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:20px;
+}
+
+.card{
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  padding:15px;
+  border-radius:15px;
+  width:160px;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px crimson;
+}
+
+.card img{
+  width:100%;
+  border-radius:10px;
+}
+
+/* BOTÃO */
+.btn{
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:white;
+  color:black;
+  cursor:pointer;
+}
+
+/* INPUT */
+input{
+  padding:8px;
+  margin:5px;
+  border-radius:5px;
+  border:none;
+}
+
+/* ADMIN */
+#adminArea{
+  display:none;
+}
+</style>
+
+</head>
+<body>
+
+<header>🩸 FAEBLOOD 🩸</header>
+
+<nav>
+<button onclick="trocar('home')">Home</button>
+<button onclick="trocar('discord')">Discord</button>
+<button onclick="trocar('membros')">Membros</button>
+<button onclick="trocar('importante')">Importante</button>
+<button onclick="trocar('recrutar')">Recrutar</button>
+<button onclick="admin()">Admin</button>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="section active">
+<h2>Bem-vindo à Faeblood</h2>
+<p>A família mais forte do RP 🔥</p>
+</div>
+
+<!-- DISCORD -->
+<div id="discord" class="section">
+<h2>Nosso Discord</h2>
+<a href="https://discord.gg/dtbw6m3Ga4
+" target="_blank">
+<button class="btn">Entrar no Discord</button>
+</a>
+</div>
+
+<!-- MEMBROS -->
+<div id="membros" class="section">
+<h2>Membros</h2>
+<div class="cards">
+
+<div class="card">
+<img src="https://via.placeholder.com/150">
+<p>Peu 👑</p>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/150">
+<p>Saulo ⚔️</p>
+</div>
+
+<div class="card">
+<img src="https://via.placeholder.com/150">
+<p>Lukas 🩸</p>
+</div>
+
+</div>
+</div>
+
+<!-- IMPORTANTE -->
+<div id="importante" class="section">
+<h2>Informações Importantes</h2>
+<p>
+📅 Cronograma:<br>
+- Segunda: Reunião<br>
+- Sexta: Evento<br><br>
+
+📢 Avisos:<br>
+Fiquem atentos ao Discord!
+</p>
+</div>
+
+<!-- RECRUTAR -->
+<div id="recrutar" class="section">
+<h2>Entrar na Faeblood</h2>
+
+<input id="nome" placeholder="Seu nome"><br>
+<input id="idade" placeholder="Idade"><br>
+<input id="motivo" placeholder="Por que entrar?"><br>
+
+<button class="btn" onclick="enviar()">Enviar</button>
+
+<p id="msg"></p>
+</div>
+
+<!-- ADMIN -->
+<div id="adminArea" class="section">
+<h2>Pedidos de Entrada</h2>
+<div id="lista"></div>
+</div>
+
+<script>
+let pedidos = [];
+
+function trocar(sec){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(sec).classList.add('active');
+}
+
+function enviar(){
+  let nome = document.getElementById('nome').value;
+  let idade = document.getElementById('idade').value;
+  let motivo = document.getElementById('motivo').value;
+
+  pedidos.push({nome, idade, motivo});
+  document.getElementById('msg').innerText = "Pedido enviado 🔥";
+}
+
+function admin(){
+  let senha = prompt("Senha:");
+
+  if(senha === "faeblood"){
+    document.getElementById('adminArea').style.display = "block";
+    trocar('adminArea');
+
+    let texto = "";
+    pedidos.forEach(p=>{
+      texto += `<p>${p.nome} (${p.idade}) - ${p.motivo}</p>`;
+    });
+
+    document.getElementById('lista').innerHTML = texto;
+  } else {
+    alert("Acesso negado");
+  }
+}
+</script>
+
+</body>
+</html>
