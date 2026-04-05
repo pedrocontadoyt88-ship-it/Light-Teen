@@ -77,7 +77,12 @@
   </div>
 
   <h2>Resultado da Votação</h2>
-  <p id="resultado">Nenhum voto ainda</p>
+
+<button onclick="verResultado()">Ver Resultado (Admin)</button>
+
+<div id="resultado" style="display:none;">
+  Nenhum voto ainda
+</div>
 
   <script>
     let votos = {};
